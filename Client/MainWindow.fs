@@ -15,11 +15,31 @@ type State = {
 }
 
 module Main =
+    // Message types to represent different actions
+    type Msg =
+        | SetUsername of string
+        | SetMessage of string
+        | SendMessage
+        | ReceiveMessage of string * string
+
     let init = {
         messages = []
         currentMessage = ""
         username = ""
     }
+
+    // Update function to handle state changes
+    let update (msg: Msg) (state: State) =
+        match msg with
+        | SetUsername username ->
+            { state with username = username }
+        | SetMessage message ->
+            { state with currentMessage = message }
+        | SendMessage ->
+            let newMessages = (state.username, state.currentMessage) :: state.messages
+            { state with messages = newMessages; currentMessage = "" }
+        | ReceiveMessage (user, message) ->
+            { state with messages = (user, message) :: state.messages }
 
     let view (state: State) dispatch =
         DockPanel.create [
@@ -48,8 +68,7 @@ module Main =
                         TextBox.create [
                             TextBox.watermark "Username"
                             TextBox.text state.username
-                            TextBox.onTextChanged (fun text ->
-                                dispatch { state with username = text })
+                            TextBox.onTextChanged (SetUsername >> dispatch)
                         ]
 
                         DockPanel.create [
@@ -57,16 +76,14 @@ module Main =
                                 TextBox.create [
                                     TextBox.watermark "Type a message..."
                                     TextBox.text state.currentMessage
-                                    TextBox.onTextChanged (fun text ->
-                                        dispatch { state with currentMessage = text })
+                                    TextBox.onTextChanged (SetMessage >> dispatch)
                                     TextBox.dock Dock.Left
                                     TextBox.width 700.0
                                 ]
 
                                 Button.create [
                                     Button.content "Send"
-                                    Button.onClick (fun _ ->
-                                        dispatch { state with currentMessage = "" })
+                                    Button.onClick (fun _ -> dispatch SendMessage)
                                     Button.dock Dock.Right
                                 ]
                             ]
@@ -86,7 +103,9 @@ type MainWindow() as this =
 
         let component = Component(fun ctx ->
             let state = ctx.useState(Main.init)
-            Main.view state.Current (fun ns -> state.Set ns)
+            Main.view state.Current (fun msg ->
+                let newState = Main.update msg state.Current
+                state.Set newState)
         )
 
         this.Content <- component

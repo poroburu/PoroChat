@@ -1,7 +1,6 @@
 namespace PoroChat.Client
 
 open Avalonia
-open Avalonia.FuncUI.Hosts
 
 
 module Program =
