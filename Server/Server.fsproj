@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>PoroChat.Server</RootNamespace>
+    <AssemblyName>PoroChat.Server</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ChatHub.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+  </ItemGroup>
+</Project>
