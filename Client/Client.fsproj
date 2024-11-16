@@ -6,10 +6,15 @@
     <AssemblyName>PoroChat.Client</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MainWindow.fs" />
+    <Compile Include="App.fs" />
     <Compile Include="Chat.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
+    <PackageReference Include="Avalonia.FuncUI" Version="1.0.1" />
   </ItemGroup>
 </Project>

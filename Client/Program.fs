@@ -1,18 +1,14 @@
-open PoroChat.Client
+namespace PoroChat.Client
 
-[<EntryPoint>]
-let main argv =
-    let client = ChatClient("http://localhost:5000/chathub")
+open Avalonia
+open Avalonia.FuncUI.Hosts
 
-    client.OnReceiveMessage(fun user message ->
-        printfn "%s: %s" user message)
 
-    client.Start().Wait()
-
-    // Test message
-    client.SendMessage("TestUser", "Hello, SignalR!").Wait()
-
-    System.Console.ReadLine() |> ignore
-
-    client.Stop().Wait()
-    0
+module Program =
+    [<EntryPoint>]
+    let main argv =
+        AppBuilder
+            .Configure<App>()
+            .UsePlatformDetect()
+            .UseSkia()
+            .StartWithClassicDesktopLifetime(argv)
